@@ -106,7 +106,5 @@ def preprocess_and_tokenize(model_config: PretrainedConfig, tokenizer: PreTraine
                                         token_type_ids=inputs['token_type_ids'],
                                         label=label))
 
-    import logging
-    logging.info(tokenized)
     random.Random(seed).shuffle(tokenized)
     return tokenized
