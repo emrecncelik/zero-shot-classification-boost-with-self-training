@@ -73,8 +73,6 @@ def finetune_entailment_model(model_name, self_training_set: SelfTrainingSet, se
 def preprocess_and_tokenize(model_config: PretrainedConfig, tokenizer: PreTrainedTokenizerBase,
                             self_training_set: SelfTrainingSet, seed: int, hypothesis_template: str):
 
-    if type(model_config) not in [RobertaConfig, DebertaConfig, BartConfig]:
-        raise NotImplementedError(f"{model_config.architectures} model is not supported")
 
     def get_numeric_label(label: str, model_config: PretrainedConfig):
         """
