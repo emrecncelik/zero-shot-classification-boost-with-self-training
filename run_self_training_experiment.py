@@ -79,7 +79,7 @@ if __name__ == '__main__':
 
     parser = ArgumentParser()
     parser.add_argument('--experiment_name', required=True)
-    parser.add_argument('--data_name', required=True)
+    parser.add_argument('--dataset_name', required=True)
     parser.add_argument("--base_model", required=True)
 
     parser.add_argument("--num_iterations", type=int, default=2)
