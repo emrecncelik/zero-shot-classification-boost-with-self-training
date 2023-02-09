@@ -44,7 +44,7 @@ def get_zero_shot_predictions(model_name, texts_to_infer, label_names, batch_siz
 
 
 def finetune_entailment_model(model_name, self_training_set: SelfTrainingSet, seed, learning_rate=2e-5, batch_size=32,
-                              max_length=512, num_epochs=1, hypothesis_template="This example is {}."):
+                              max_length=512, num_epochs=1, hypothesis_template="Bu metin {} talebi içeriyor."):
     model_id = f"{str(uuid.uuid4())}_fine_tuned_{model_name.replace(os.sep, '_')}"
     
     tokenizer = AutoTokenizer.from_pretrained(model_name, use_fast=True, model_max_length=max_length)

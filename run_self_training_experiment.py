@@ -7,7 +7,7 @@ import logging
 import os
 import random
 import shutil
-
+import pickle
 from argparse import ArgumentParser
 from collections import defaultdict, Counter
 from enum import Enum
@@ -79,7 +79,7 @@ if __name__ == '__main__':
 
     parser = ArgumentParser()
     parser.add_argument('--experiment_name', required=True)
-    parser.add_argument('--dataset_name', required=True)
+    parser.add_argument('--data_path', required=True)
     parser.add_argument("--base_model", required=True)
 
     parser.add_argument("--num_iterations", type=int, default=2)
@@ -104,7 +104,7 @@ if __name__ == '__main__':
                              if key not in ['seed', 'infer_batch_size', 'delete_models']])
     set_seed(args.seed)
 
-    data_path = os.path.join(get_root_dir(), 'datasets', args.dataset_name)
+    data_path = args.dataset_name
     out_dir = os.path.join(get_root_dir(), 'output', 'experiments', args.experiment_name)
     os.makedirs(out_dir, exist_ok=True)
 
@@ -114,13 +114,18 @@ if __name__ == '__main__':
     with open(os.path.join(data_path, 'class_names.txt')) as f:
         class_names = f.read().splitlines()
 
+    with open(os.path.join(data_path, 'class_name_mapping.pkl'), "rb") as f:
+        mapping = pickle.load(f)
+
     # Limit the size of the unlabeled set to reduce runtime
     subset_idxs = random.sample(range(len(unlabeled_texts)), min(args.dataset_subset_size, len(unlabeled_texts)))
     unlabeled_texts = [unlabeled_texts[idx] for idx in subset_idxs]
 
     test_df = pd.read_csv(os.path.join(data_path, 'test.csv'))
+    test_df['label'] = test_df['label'].apply(lambda x: mapping[x])
     test_texts = test_df['text']
     test_gold_labels = test_df['label']
+    
 
     # Set the desired number of pseudo-labeled positive examples per class
     sample_size = int(len(unlabeled_texts) * args.sample_ratio)
