@@ -114,15 +114,15 @@ if __name__ == '__main__':
     with open(os.path.join(data_path, 'class_names.txt')) as f:
         class_names = f.read().splitlines()
 
-    with open(os.path.join(data_path, 'class_name_mapping.pkl'), "rb") as f:
-        mapping = pickle.load(f)
+    # with open(os.path.join(data_path, 'class_name_mapping.pkl'), "rb") as f:
+    #     mapping = pickle.load(f)
 
     # Limit the size of the unlabeled set to reduce runtime
     subset_idxs = random.sample(range(len(unlabeled_texts)), min(args.dataset_subset_size, len(unlabeled_texts)))
     unlabeled_texts = [unlabeled_texts[idx] for idx in subset_idxs]
 
     test_df = pd.read_csv(os.path.join(data_path, 'test.csv'))
-    test_df['label'] = test_df['label'].apply(lambda x: mapping[x])
+    # test_df['label'] = test_df['label'].apply(lambda x: mapping[x])
     test_texts = test_df['text']
     test_gold_labels = test_df['label']
     
