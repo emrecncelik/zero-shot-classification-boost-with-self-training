@@ -100,15 +100,12 @@ def preprocess_and_tokenize(model_config: PretrainedConfig, tokenizer: PreTraine
         inputs = (tokenizer.encode_plus([text, hypothesis], add_special_tokens=True, padding='max_length',
                                         truncation='only_first'))
 
-        if type(model_config) == DebertaConfig:
-            tokenized.append(InputFeatures(input_ids=inputs['input_ids'],
-                                           attention_mask=inputs['attention_mask'],
-                                           token_type_ids=inputs['token_type_ids'],
-                                           label=label))
-        elif type(model_config) in [RobertaConfig, BartConfig]:
-            tokenized.append(InputFeatures(input_ids=inputs['input_ids'],
-                                           attention_mask=inputs['attention_mask'],
-                                           label=label))
+
+        tokenized.append(InputFeatures(input_ids=inputs['input_ids'],
+                                        attention_mask=inputs['attention_mask'],
+                                        token_type_ids=inputs['token_type_ids'],
+                                        label=label))
+
     import logging
     logging.info(tokenized)
     random.Random(seed).shuffle(tokenized)
